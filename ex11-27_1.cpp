@@ -13,16 +13,19 @@
 0 1 10
 0 6 123 32134
 */
+// 头文件
 #include <iostream>
 #include <string>
 
 using namespace std;
+// 交换函数
 void swap(int &a, int &b)
 {
     int tmp = a;
     a = b;
     b = tmp;
 }
+// 向上调整建堆
 void adjustup(int *arr, int child)
 {
     int parent = (child - 1) / 2;
@@ -40,6 +43,7 @@ void adjustup(int *arr, int child)
         }
     }
 }
+// 向下调整建堆
 void adjustdown(int *arr, int parent, int n)
 {
     int child = parent * 2 + 1;
@@ -61,6 +65,7 @@ void adjustdown(int *arr, int parent, int n)
         }
     }
 }
+// 堆排序：快
 void heapsortup(int *arr, int n)
 {
     for (int i = 0; i < n; i++)
@@ -77,21 +82,23 @@ void heapsortup(int *arr, int n)
 }
 int main()
 {
+    // 要输入字符串的个数
     int n;
     cin >> n;
-    string *s = new string[n];
+    string *s = new string[n]; // 用string，不用考虑越界问题
     for (int k = 0; k < n; k++)
     {
         cin >> s[k];
     }
     for (int k = 0; k < n; k++)
     {
-        int *size = new int[1000]{0};
-        int len = 0;
+        int *size = new int[1000]{0}; // size数组用于记录每个数的位数
+        int len = 0;                  // 用于控制size
         const char *str = s[k].c_str();
         int i = 0;
         while (i < s[k].size())
         {
+            // 跳过字符串中为分割符的字符
             if (str[i] == '5' || (str[i] >= 'A' && str[i] <= 'z'))
             {
                 while (str[i] == '5' || (str[i] >= 'A' && str[i] <= 'z'))
@@ -103,17 +110,18 @@ int main()
             {
                 while (str[i] != '5' && str[i] >= '0' && str[i] <= '9')
                 {
-                    size[len]++;
+                    size[len]++; // 若此时该字符不为分割符，则该数的位数+1；
                     i++;
                 }
-                len++;
+                len++; // 当前数字统计完毕，统计下一数字
             }
         }
-        int *ans = new int[len]{0};
-        int lenl = 0;
+        int *ans = new int[len]{0}; // ans用于存放转化后的整数
+        int lenl = 0;               // 控制ans
         i = 0;
         while (i < s[k].size())
         {
+            // 作用同上
             if (str[i] == '5' || (str[i] >= 'A' && str[i] <= 'z'))
             {
                 while (str[i] == '5' || (str[i] >= 'A' && str[i] <= 'z'))
@@ -123,9 +131,11 @@ int main()
             }
             else
             {
+                // 向ans中输入整数
                 while (str[i] != '5' && str[i] >= '0' && str[i] <= '9')
                 {
                     int tmp = str[i] - '0';
+                    // 使其成为对应位的大小
                     for (int j = 0; j < size[lenl] - 1; j++)
                     {
                         tmp *= 10;
@@ -134,10 +144,11 @@ int main()
                     size[lenl]--;
                     i++;
                 }
-                lenl++;
+                lenl++; // 该数统计完毕，统计下一个整数。
             }
         }
-        heapsortup(ans, lenl);
+        heapsortup(ans, lenl); // 对ans中的数据进行排序
+        // 输出
         for (int j = 0; j < lenl; j++)
         {
             cout << ans[j] << " ";
